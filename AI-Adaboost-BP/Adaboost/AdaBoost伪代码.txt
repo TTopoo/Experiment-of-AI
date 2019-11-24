@@ -1,0 +1,41 @@
+打开pkl文件，读取mnist数据
+给L长度的数据附上权值1/L
+将数据丢进1~j个的决策树中：
+	对第j个决策树而言，计算它的预测值和准确度
+	若准确度(1-error)低于0.5
+		则认定为不是弱分类器了，更新j值为当前值，不进入下一个弱分类器了，跳出循环
+	反之
+		Gj(x)在强分类器中所占的权重,alpha[j]=0.5*log((1-error)/(1.0*error))
+		对每一个样本，若预测结果正确
+			样本概率变小p[i] = p[i]*(1.0*sqrt(1.0/(1.0*self.alpha[j])))
+		反之
+			样本概率变大p[i] = p[i]*(1.0*sqrt(1.0*self.alpha[j]))
+		更新训练数据集的权值分布（zj是归一化因子，为了使样本的概率分布和为1）：
+	
+对i个样本进行预测结果
+	遍历这j个弱分类器
+		对j个弱分类器预测的结果list对应乘上权重
+		将权重的结果list求二范数来比较
+		将二范数的倒数乘上list后，其中的最大值就是每一个样本对应的预测值了
+
+
+准确率Accuacy= (预测值==真实值)? 准确度+=1/样本数
+for i in range(10):#计算混淆矩阵
+	if labels[i] == 1 and scores[i] == 1
+		tp++
+	elif labels[i] == 0 and scores[i] == 1
+		fp++
+	elif labels[i] == 1 and scores[i] == 0
+		fn++
+	else:
+		tn++
+	TPR[i]=TP/(TP+FN)
+	FPR[i]=FP/(FP+TN)
+	Precision = TP/(TP+FP)     Recall = TPR[i]
+生成ROC需要的坐标TPR,FPR后，计算AUC
+for x, y in xy_arr:
+	if x != prev_x:
+		auc += (x - prev_x) * y
+		prev_x = x
+    return auc
+建图

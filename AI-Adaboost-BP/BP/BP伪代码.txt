@@ -1,0 +1,41 @@
+
+初始化神经网络，sizes是神经网络的层数和每层神经元个数
+第二、三层的神经元w_(784*40,40*10)、第二、三层的神经元的偏移b_(40*10)初始化为正态分布随机数
+
+
+加载、打乱训练集
+将训练集分成多个batch_size大小的子集
+对每一个子集进行训练，更新其中的权值w_和偏移b_
+	误差反向传播更新权值矩阵
+	输出层
+		Δwji(n)=ηδj(n)*yi(n)
+		δj(n)=(dj(n)-yj(n))φj'(vj(n))
+	中间层
+		δj(n) = φj'(vj(n)) * Σk(δk(n)wkj(n)) 
+			= φj'(vj(n)) * Σk(dk(n)-yk(n)) * φ'(vk(n)) * wkj(n)
+	wji(n+1)=wji(n)+Δwji(n)=wji(n)+ηδj(n)*yi(n)
+	
+预测结果
+	u=Σm,j=1(wjxj)
+	y=sigmoid(u+b)
+
+准确率Accuacy= (预测值==真实值)? 准确度+=1/样本数
+for i in range(10):#计算混淆矩阵
+	if labels[i] == 1 and scores[i] == 1
+		tp++
+	elif labels[i] == 0 and scores[i] == 1
+		fp++
+	elif labels[i] == 1 and scores[i] == 0
+		fn++
+	else:
+		tn++
+	TPR[i]=TP/(TP+FN)
+	FPR[i]=FP/(FP+TN)
+	Precision = TP/(TP+FP)     Recall = TPR[i]
+生成ROC需要的坐标TPR,FPR后，计算AUC
+for x, y in xy_arr:
+	if x != prev_x:
+		auc += (x - prev_x) * y
+		prev_x = x
+    return auc
+建图
